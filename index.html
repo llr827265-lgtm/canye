@@ -9973,6 +9973,147 @@ background: #fff; color: #444; font-size: 13px; font-weight: 600; cursor: pointe
 }
 [data-theme="dark"] .nb-batch-bar button { background: #2a2a2a; color: #ddd; border-color: rgba(255,255,255,.14); }
 .nb-batch-bar button#nb-batch-del { color: #d94848; border-color: rgba(217,72,72,.35); }
+#page-punch { display: flex; flex-direction: column; background: #fff; }
+#page-punch[hidden] { display: none; }
+.punch-body { flex: 1; overflow-y: auto; padding: 16px 18px 90px; box-sizing: border-box; }
+.punch-quote {
+display: flex; align-items: flex-start; gap: 6px;
+padding: 12px 14px; margin-bottom: 14px;
+border-radius: 14px; border: 1px solid rgba(0, 0, 0, .08);
+background: #faf9f6;
+font-size: 13.5px; line-height: 1.65; color: var(--ink, #333);
+}
+.punch-quote-lbl { flex: 0 0 auto; font-weight: 700; color: var(--muted, #888); }
+.punch-quote-txt { flex: 1; min-width: 0; word-break: break-word; }
+.punch-empty {
+text-align: center; color: var(--muted, #999); font-size: 13px; line-height: 2;
+padding: 40px 0 24px;
+}
+.punch-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.punch-card {
+position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+gap: 6px; padding: 18px 12px 14px; min-height: 132px;
+font-family: inherit; cursor: pointer; text-align: center;
+border-radius: 16px;
+border: 1px solid rgba(0, 0, 0, .09);
+background-color: #fffdf8;
+background-image: repeating-linear-gradient(180deg, rgba(0, 0, 0, .028) 0 1px, transparent 1px 22px);
+box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+color: var(--ink, #333);
+-webkit-tap-highlight-color: transparent;
+transition: transform .15s ease, box-shadow .15s ease;
+}
+.punch-card:active { transform: scale(.97); }
+.punch-card.done { border-color: color-mix(in srgb, var(--btn-bg, #111) 35%, transparent); }
+.punch-card-ico { font-size: 30px; line-height: 1; }
+.punch-card-name { font-size: 15px; font-weight: 700; letter-spacing: .5px; }
+.punch-card-days { font-size: 11.5px; color: var(--muted, #999); }
+.punch-scene { position: relative; margin-top: 26px; height: 60px; }
+.punch-bubble {
+position: absolute; left: 8px; top: 6px; max-width: 70%;
+font-size: 12px; color: var(--ink, #444); line-height: 1.6;
+background: #fffdf8; border: 1px solid rgba(0, 0, 0, .1);
+border-radius: 12px; padding: 7px 12px; cursor: pointer;
+box-shadow: 0 2px 6px rgba(0, 0, 0, .05);
+}
+.punch-mask {
+position: fixed; inset: 0; z-index: 9998; display: flex; align-items: center; justify-content: center;
+padding: 18px; box-sizing: border-box;
+background: rgba(0, 0, 0, .3); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+}
+.punch-panel {
+width: 100%; max-width: 400px; max-height: 86vh; overflow-y: auto;
+padding: 18px 16px; box-sizing: border-box; border-radius: 20px;
+border: 1px solid rgba(0, 0, 0, .09);
+box-shadow: 0 18px 50px rgba(0, 0, 0, .18);
+}
+.punch-paper {
+background-color: #fffdf8;
+background-image:
+repeating-linear-gradient(180deg, rgba(0, 0, 0, .03) 0 1px, transparent 1px 24px);
+color: var(--ink, #333);
+}
+.punch-done-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.punch-done-ico { font-size: 34px; }
+.punch-done-head b { display: block; font-size: 16px; }
+.punch-done-sub { font-size: 12px; color: var(--muted, #999); }
+.punch-log-lbl { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.punch-note {
+width: 100%; min-height: 150px; box-sizing: border-box; resize: vertical;
+font-family: inherit; font-size: 13.5px; line-height: 23px; color: var(--ink, #333);
+padding: 10px 12px; border-radius: 12px;
+border: 1px solid rgba(0, 0, 0, .1); background: #fffdf8;
+background-image: repeating-linear-gradient(180deg, transparent 0 22px, rgba(0, 0, 0, .05) 22px 23px);
+}
+.punch-note::placeholder { color: var(--muted, #aaa); }
+.punch-log-actions { display: flex; gap: 10px; margin-top: 14px; }
+.punch-btn {
+font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+border-radius: 12px; padding: 10px 16px; border: 1px solid rgba(0, 0, 0, .12);
+background: #fff; color: var(--ink, #444);
+-webkit-tap-highlight-color: transparent;
+}
+.punch-btn.primary { background: var(--btn-bg, #111); color: var(--btn-ink, #fff); border-color: transparent; flex: 1; }
+.punch-btn.ghost { background: transparent; }
+.punch-add-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.punch-add-head b { font-size: 16px; }
+.punch-add-head .punch-btn.primary { flex: 0 0 auto; min-width: 74px; }
+.punch-presets { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.punch-preset {
+display: flex; flex-direction: column; align-items: center; gap: 6px;
+padding: 12px 6px; border-radius: 14px; cursor: pointer;
+font-family: inherit; font-size: 12.5px; color: var(--ink, #444);
+border: 1px solid rgba(0, 0, 0, .09); background: #fffdf8;
+-webkit-tap-highlight-color: transparent;
+}
+.punch-preset.sel { border-color: var(--btn-bg, #111); box-shadow: inset 0 0 0 1px var(--btn-bg, #111); }
+.punch-preset-ico { font-size: 24px; line-height: 1; }
+.punch-custom-row { display: flex; gap: 8px; margin-top: 14px; }
+.punch-input {
+flex: 1; min-width: 0; font-family: inherit; font-size: 13.5px; color: var(--ink, #333);
+padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(0, 0, 0, .12); background: #fffdf8;
+}
+.punch-custom-row .punch-btn.ghost { font-size: 18px; padding: 6px 12px; }
+.punch-hint { font-size: 11.5px; color: var(--muted, #999); line-height: 1.7; margin-top: 10px; }
+.punch-diary-btn {
+position: fixed; right: 18px; bottom: calc(24px + var(--mochi-safe-bottom, env(safe-area-inset-bottom, 0px)));
+z-index: 20; display: flex; align-items: center; gap: 6px;
+font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+padding: 10px 16px; border-radius: 999px; border: 1px solid rgba(0, 0, 0, .1);
+background: #fff; color: #333; box-shadow: 0 4px 14px rgba(0, 0, 0, .12);
+-webkit-tap-highlight-color: transparent;
+}
+.punch-btn { font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 12px; padding: 9px 14px; border: 1px solid rgba(0, 0, 0, .12); background: #fff; color: var(--ink, #444); }
+.punch-btn.primary { background: var(--btn-bg, #111); color: var(--btn-ink, #fff); border-color: transparent; }
+.punch-diary { max-height: 80vh; }
+.punch-diary-item {
+display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
+padding: 11px 6px; border: none; border-bottom: 1px solid rgba(0, 0, 0, .06);
+background: none; font-family: inherit; cursor: pointer;
+}
+.punch-diary-ico { font-size: 22px; flex: 0 0 auto; }
+.punch-diary-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.punch-diary-t { font-size: 13.5px; font-weight: 600; color: var(--ink, #333); }
+.punch-diary-s { font-size: 11.5px; color: var(--muted, #999); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.punch-diary-thumb { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; flex: 0 0 auto; }
+.punch-detail-date { font-size: 12px; color: var(--muted, #999); margin-bottom: 10px; }
+.punch-detail-note { font-size: 13.5px; line-height: 1.85; color: var(--ink, #333); white-space: pre-wrap; word-break: break-word; min-height: 44px; }
+.punch-detail-img { display: block; max-width: 100%; border-radius: 12px; margin-top: 12px; }
+[data-theme="dark"] #page-punch { background: #111; }
+[data-theme="dark"] .punch-quote { background: #1c1c1f; border-color: rgba(255, 255, 255, .08); color: #ddd; }
+[data-theme="dark"] .punch-diary-btn { background: #1f1f22; color: #ddd; border-color: rgba(255, 255, 255, .12); }
+[data-theme="dark"] .punch-btn { background: #2a2a2e; color: #ddd; border-color: rgba(255, 255, 255, .12); }
+[data-theme="dark"] .punch-btn.primary { background: #eee; color: #111; }
+[data-theme="dark"] .punch-diary-item { border-color: rgba(255, 255, 255, .08); }
+[data-theme="dark"] .punch-diary-t,
+[data-theme="dark"] .punch-detail-note { color: #ddd; }
+[data-theme="dark"] .punch-card,
+[data-theme="dark"] .punch-paper,
+[data-theme="dark"] .punch-preset,
+[data-theme="dark"] .punch-note { background-color: #1f1f22; border-color: rgba(255, 255, 255, .1); color: #ddd; }
+[data-theme="dark"] .punch-btn { background: #2a2a2e; color: #ddd; border-color: rgba(255, 255, 255, .12); }
+[data-theme="dark"] .punch-btn.primary { background: #eee; color: #111; }
+[data-theme="dark"] .punch-bubble { background: #1f1f22; color: #ddd; border-color: rgba(255, 255, 255, .1); }
 .site-cover-bar {
 width: 100%;
 height: 130px;
@@ -11427,7 +11568,7 @@ font-size: 11.5px; color: var(--muted, #8a8a8a); cursor: pointer; touch-action: 
            （名称+版号 / 部署时间+实时秒 / 版本检测行）收成一行；检测行随 ver-check.js 退役删除。
            data-build-ts / data-version 两属性保留：device.js 诊断、bg-keep 自检、pwa.js 旧包检测
            仍只读属性（诊断版本号走 data-version 兜底，device.js 两处缓存原生支持）。 -->
-      <div class="splash-ver" id="splash-ver" data-build-ts="1795007087447" data-version="v8.56">
+      <div class="splash-ver" id="splash-ver" data-build-ts="1795012625488" data-version="v8.56">
         <span class="sv-app">Mochi 字卡传讯 已完结停更</span>
       </div>
       <!-- v3.5.120：数据（IndexedDB 回填）加载完成前不显示「点击进入」按钮，
@@ -11651,6 +11792,10 @@ font-size: 11.5px; color: var(--muted, #8a8a8a); cursor: pointer; touch-action: 
 <div class="app" data-app="chatcard" data-desk-widget="app-chatcard">
 <div class="app-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="13" height="12" rx="2"/><path d="M7 7V5a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2h-2"/><path d="M6.5 11h6M6.5 14.5h4"/></svg></div>
 <div class="app-name">字卡库</div>
+</div>
+<div class="app" data-app="punch" data-desk-widget="app-punch">
+<div class="app-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="3"/><path d="M9 3v4M15 3v4"/><path d="M8.5 13.5l2.2 2.2 4.3-4.6"/></svg></div>
+<div class="app-name">打卡</div>
 </div>
 <!-- 本地二改：提问记录图标已移除（提问功能已删） -->
 <!-- 花园自第三页移入：第二排「花园 此间 同频 伸手」（此间紧随其后为模板静态图标，同频/伸手由 p2-features 追加） -->
@@ -18317,7 +18462,7 @@ font-size: 11.5px; color: var(--muted, #8a8a8a); cursor: pointer; touch-action: 
   // v3.5.123：readonly 起手（防 Chrome 密码弹条破坏表单签名）——这里立即解除，
   // 早于所有功能模块，任何设备都不会出现输入框不可用的情况
   (function () { var _ci = document.getElementById('chat-input'); if (_ci) _ci.readOnly = false; })();
-window.__jsErrors = window.__jsErrors || []; window.__mochiLoaded = window.__mochiLoaded || []; window.__mochiErrLoaded = window.__mochiErrLoaded || []; window.__mochiBootAt = Date.now(); window.__mochiJsFiles = ["device.js","idb.js","contacts.js","applock.js","card-lock.js","dcp-master.js","media-pool.js","storage-slim.js","perf-check.js","energy-check.js","flash-check.js","img-compress.js","img-ingest.js","clock.js","entry-quiz.js","tabs.js","desktop-slider.js","quote-cards.js","personalize.js","chat.js","group-chat.js","chatcard.js","chat-settings.js","ai-chat.js","ai-link.js","reply-settings.js","fav-settings.js","default-cards-data.js","dict-ext-data.js","default-cards.js","quote-spell.js","dream-free.js","mood-followup-data.js","mood-reply-cards.js","ta-mood-data.js","ta-mood.js","fav-reason-data.js","fav-reason.js","music-player.js","calendar.js","divination.js","card-transmit.js","avatar-lib.js","ta-ask.js","ck-question.js","incoming-requests.js","ta-invite.js","bg-keep.js","records.js","call.js","mail.js","feed.js","loc-lib.js","p2-features.js","gift-shop.js","memo-app.js","memo-arc.js","my-arc.js","period.js","accounting.js","garden.js","room.js","drift-bottle.js","decision.js","group-decision.js","pong.js","snake-game.js","breakout.js","connect-four.js","coop-mine.js","fishing.js","memory-game.js","gomoku.js","linkup.js","match3.js","auction.js","arcade.js","mood-diary.js","sfx.js","fullscreen.js","data-backup.js","feature-data.js","pwa.js","update-remind.js","cjian.js","feature-hub.js","settings-help.js","onboarding.js","page-coach.js","card-audit.js","storage-guide.js","notebook.js","desk-shortcuts.js","site-brand.js","mobile-adapt.js"]; window.__mochiExtFiles = ["idb.js","contacts.js","applock.js","card-lock.js","dcp-master.js","media-pool.js","storage-slim.js","perf-check.js","energy-check.js","flash-check.js","img-compress.js","img-ingest.js","clock.js","entry-quiz.js","tabs.js","desktop-slider.js","quote-cards.js","personalize.js","chat.js","group-chat.js","chatcard.js","chat-settings.js","ai-chat.js","ai-link.js","reply-settings.js","fav-settings.js","default-cards-data.js","dict-ext-data.js","default-cards.js","quote-spell.js","dream-free.js","mood-followup-data.js","mood-reply-cards.js","ta-mood-data.js","ta-mood.js","fav-reason-data.js","fav-reason.js","music-player.js","calendar.js","divination.js","card-transmit.js","avatar-lib.js","ta-ask.js","ck-question.js","incoming-requests.js","ta-invite.js","bg-keep.js","records.js","call.js","mail.js","feed.js","loc-lib.js","p2-features.js","gift-shop.js","memo-app.js","memo-arc.js","my-arc.js","period.js","accounting.js","garden.js","room.js","drift-bottle.js","decision.js","group-decision.js","pong.js","snake-game.js","breakout.js","connect-four.js","coop-mine.js","fishing.js","memory-game.js","gomoku.js","linkup.js","match3.js","auction.js","arcade.js","mood-diary.js","sfx.js","fullscreen.js","data-backup.js","feature-data.js","update-remind.js","cjian.js","feature-hub.js","settings-help.js","onboarding.js","page-coach.js","card-audit.js","storage-guide.js","notebook.js","desk-shortcuts.js","site-brand.js","mobile-adapt.js"];
+window.__jsErrors = window.__jsErrors || []; window.__mochiLoaded = window.__mochiLoaded || []; window.__mochiErrLoaded = window.__mochiErrLoaded || []; window.__mochiBootAt = Date.now(); window.__mochiJsFiles = ["device.js","idb.js","contacts.js","applock.js","card-lock.js","dcp-master.js","media-pool.js","storage-slim.js","perf-check.js","energy-check.js","flash-check.js","img-compress.js","img-ingest.js","clock.js","entry-quiz.js","tabs.js","desktop-slider.js","quote-cards.js","personalize.js","chat.js","group-chat.js","chatcard.js","chat-settings.js","ai-chat.js","ai-link.js","reply-settings.js","fav-settings.js","default-cards-data.js","dict-ext-data.js","default-cards.js","quote-spell.js","dream-free.js","mood-followup-data.js","mood-reply-cards.js","ta-mood-data.js","ta-mood.js","fav-reason-data.js","fav-reason.js","music-player.js","calendar.js","divination.js","card-transmit.js","avatar-lib.js","ta-ask.js","ck-question.js","incoming-requests.js","ta-invite.js","bg-keep.js","records.js","call.js","mail.js","feed.js","loc-lib.js","p2-features.js","gift-shop.js","memo-app.js","memo-arc.js","my-arc.js","period.js","accounting.js","garden.js","room.js","drift-bottle.js","decision.js","group-decision.js","pong.js","snake-game.js","breakout.js","connect-four.js","coop-mine.js","fishing.js","memory-game.js","gomoku.js","linkup.js","match3.js","auction.js","arcade.js","mood-diary.js","sfx.js","fullscreen.js","data-backup.js","feature-data.js","pwa.js","update-remind.js","cjian.js","feature-hub.js","settings-help.js","onboarding.js","page-coach.js","card-audit.js","storage-guide.js","notebook.js","punch.js","desk-shortcuts.js","site-brand.js","mobile-adapt.js"]; window.__mochiExtFiles = ["idb.js","contacts.js","applock.js","card-lock.js","dcp-master.js","media-pool.js","storage-slim.js","perf-check.js","energy-check.js","flash-check.js","img-compress.js","img-ingest.js","clock.js","entry-quiz.js","tabs.js","desktop-slider.js","quote-cards.js","personalize.js","chat.js","group-chat.js","chatcard.js","chat-settings.js","ai-chat.js","ai-link.js","reply-settings.js","fav-settings.js","default-cards-data.js","dict-ext-data.js","default-cards.js","quote-spell.js","dream-free.js","mood-followup-data.js","mood-reply-cards.js","ta-mood-data.js","ta-mood.js","fav-reason-data.js","fav-reason.js","music-player.js","calendar.js","divination.js","card-transmit.js","avatar-lib.js","ta-ask.js","ck-question.js","incoming-requests.js","ta-invite.js","bg-keep.js","records.js","call.js","mail.js","feed.js","loc-lib.js","p2-features.js","gift-shop.js","memo-app.js","memo-arc.js","my-arc.js","period.js","accounting.js","garden.js","room.js","drift-bottle.js","decision.js","group-decision.js","pong.js","snake-game.js","breakout.js","connect-four.js","coop-mine.js","fishing.js","memory-game.js","gomoku.js","linkup.js","match3.js","auction.js","arcade.js","mood-diary.js","sfx.js","fullscreen.js","data-backup.js","feature-data.js","update-remind.js","cjian.js","feature-hub.js","settings-help.js","onboarding.js","page-coach.js","card-audit.js","storage-guide.js","notebook.js","punch.js","desk-shortcuts.js","site-brand.js","mobile-adapt.js"];
 (function () { try {
 (function () {
 try { window.__jsErrors = window.__jsErrors || []; } catch (e0) {}
@@ -23129,6 +23274,7 @@ window.__mochiBootRetry = function () { try { location.reload(); } catch (e) {} 
 <script defer src="js/card-audit.js" onerror="window.__mochiExtFail=(window.__mochiExtFail||[]).concat('card-audit.js')"></script>
 <script defer src="js/storage-guide.js" onerror="window.__mochiExtFail=(window.__mochiExtFail||[]).concat('storage-guide.js')"></script>
 <script defer src="js/notebook.js" onerror="window.__mochiExtFail=(window.__mochiExtFail||[]).concat('notebook.js')"></script>
+<script defer src="js/punch.js" onerror="window.__mochiExtFail=(window.__mochiExtFail||[]).concat('punch.js')"></script>
 <script defer src="js/desk-shortcuts.js" onerror="window.__mochiExtFail=(window.__mochiExtFail||[]).concat('desk-shortcuts.js')"></script>
 <script defer src="js/site-brand.js" onerror="window.__mochiExtFail=(window.__mochiExtFail||[]).concat('site-brand.js')"></script>
 <script defer src="js/mobile-adapt.js" onerror="window.__mochiExtFail=(window.__mochiExtFail||[]).concat('mobile-adapt.js')"></script>
@@ -23153,4 +23299,4 @@ window.__mochiBootRetry = function () { try { location.reload(); } catch (e) {} 
 <!-- __MOCHI_EOF__ -->
 </body>
 </html>
-<!-- __MOCHI_EOF__ mwm4vgwn -->
+<!-- __MOCHI_EOF__ mwm86634 -->
