@@ -985,6 +985,8 @@ img.media-tok-missing { background: rgba(0,0,0,.06); min-width: 48px; min-height
 .phone { top: var(--mochi-shift-adj, 0px); }
 body.mochi-bg-pause *, body.mochi-bg-pause *::before, body.mochi-bg-pause *::after { animation-play-state: paused !important; }
 html:not(.icons-ready) .app-grid .app { opacity: 0; }
+html:not(.icons-ready) .app-grid .app { animation: mochiIconsReveal 0s 2.5s forwards; }
+@keyframes mochiIconsReveal { to { opacity: 1; } }
 :root {
 --widget-bg:#ffffff;
 --widget-border:rgba(0,0,0,.1);
@@ -11425,7 +11427,7 @@ font-size: 11.5px; color: var(--muted, #8a8a8a); cursor: pointer; touch-action: 
            （名称+版号 / 部署时间+实时秒 / 版本检测行）收成一行；检测行随 ver-check.js 退役删除。
            data-build-ts / data-version 两属性保留：device.js 诊断、bg-keep 自检、pwa.js 旧包检测
            仍只读属性（诊断版本号走 data-version 兜底，device.js 两处缓存原生支持）。 -->
-      <div class="splash-ver" id="splash-ver" data-build-ts="1793885953503" data-version="v8.56">
+      <div class="splash-ver" id="splash-ver" data-build-ts="1795007087447" data-version="v8.56">
         <span class="sv-app">Mochi 字卡传讯 已完结停更</span>
       </div>
       <!-- v3.5.120：数据（IndexedDB 回填）加载完成前不显示「点击进入」按钮，
@@ -14360,7 +14362,6 @@ font-size: 11.5px; color: var(--muted, #8a8a8a); cursor: pointer; touch-action: 
               <div class="gs-row"><span>音乐字卡概率</span><div class="stepper" id="dcf-prob-music-rs" data-dcfkey="music" data-min="0" data-max="100" data-step="5"><button class="stp-min">−</button><input class="stp-val" id="dcf-prob-music-rs-val" readonly><button class="stp-max">+</button></div></div>
               <div class="gs-row"><span>跨桌面查岗字卡概率</span><div class="stepper" id="dcf-prob-deskcheck-rs" data-dcfkey="deskcheck" data-min="0" data-max="100" data-step="5"><button class="stp-min">−</button><input class="stp-val" id="dcf-prob-deskcheck-rs-val" readonly><button class="stp-max">+</button></div></div>
               
-              <div class="gs-row"><span>番茄钟字卡概率</span><div class="stepper" id="dcf-prob-pomo-rs" data-dcfkey="pomo" data-min="0" data-max="100" data-step="5"><button class="stp-min">−</button><input class="stp-val" id="dcf-prob-pomo-rs-val" readonly><button class="stp-max">+</button></div></div>
               <div class="gs-row"><span>TA的关心（经期）字卡概率</span><div class="stepper" id="dcf-prob-care-rs" data-dcfkey="care" data-min="0" data-max="100" data-step="5"><button class="stp-min">−</button><input class="stp-val" id="dcf-prob-care-rs-val" readonly><button class="stp-max">+</button></div></div>
               <div class="gs-row"><span>备忘提醒字卡概率</span><div class="stepper" id="dcf-prob-memo-rs" data-dcfkey="memo" data-min="0" data-max="100" data-step="5"><button class="stp-min">−</button><input class="stp-val" id="dcf-prob-memo-rs-val" readonly><button class="stp-max">+</button></div></div>
               <div class="gs-row"><span>TA主动提问字卡概率</span><div class="stepper" id="dcf-prob-ask-rs" data-dcfkey="ask" data-min="0" data-max="100" data-step="5"><button class="stp-min">−</button><input class="stp-val" id="dcf-prob-ask-rs-val" readonly><button class="stp-max">+</button></div></div>
@@ -14938,7 +14939,6 @@ font-size: 11.5px; color: var(--muted, #8a8a8a); cursor: pointer; touch-action: 
         <div class="gs-row"><span>漂流瓶字卡概率</span><div class="stepper" id="dcf-prob-drift" data-min="0" data-max="100" data-step="5"><button class="stp-min">−</button><input class="stp-val" id="dcf-prob-drift-val" readonly><button class="stp-max">+</button></div></div>
         <div class="gs-row"><span>互动回应字卡概率</span><div class="stepper" id="dcf-prob-interact" data-min="0" data-max="100" data-step="5"><button class="stp-min">−</button><input class="stp-val" id="dcf-prob-interact-val" readonly><button class="stp-max">+</button></div></div>
         <div class="gs-row"><span>音乐字卡概率</span><div class="stepper" id="dcf-prob-music" data-min="0" data-max="100" data-step="5"><button class="stp-min">−</button><input class="stp-val" id="dcf-prob-music-val" readonly><button class="stp-max">+</button></div></div>
-        <div class="gs-row"><span>番茄钟完成发到聊天</span><div class="stepper" id="dcf-prob-pomo" data-min="0" data-max="100" data-step="5"><button class="stp-min">−</button><input class="stp-val" id="dcf-prob-pomo-val" readonly><button class="stp-max">+</button></div></div>
         <!-- v3.42.x #422：TA的关心（经期）——在经期页「梦角关心」按钮之外追加一层概率门控，
              0%=不发关心，100%=只按经期页原节奏；「梦角关心」按钮本身不受本概率影响。 -->
         <div class="gs-row"><span>TA的关心（经期）</span><div class="stepper" id="dcf-prob-care" data-min="0" data-max="100" data-step="5"><button class="stp-min">−</button><input class="stp-val" id="dcf-prob-care-val" readonly><button class="stp-max">+</button></div></div>
@@ -23153,4 +23153,4 @@ window.__mochiBootRetry = function () { try { location.reload(); } catch (e) {} 
 <!-- __MOCHI_EOF__ -->
 </body>
 </html>
-<!-- __MOCHI_EOF__ mw3ldof3 -->
+<!-- __MOCHI_EOF__ mwm4vgwn -->
