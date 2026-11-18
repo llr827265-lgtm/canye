@@ -825,13 +825,19 @@ function aiFeedSay(kind, extra) {
 try {
 if (!(window.__aiChatMode && window.__aiChatMode()) || !window.__aiGenerate) return Promise.resolve(null);
 var name = (window.activeStore && window.activeStore().get('lbl-partner')) || 'TA';
+var d = new Date();
+var hh = d.getHours(), mm = d.getMinutes();
+var label = hh < 6 ? '凌晨' : hh < 9 ? '清晨' : hh < 12 ? '上午' : hh < 14 ? '中午' : hh < 18 ? '下午' : hh < 23 ? '晚上' : '深夜';
+var nowStr = (d.getMonth() + 1) + '月' + d.getDate() + '日 星期' + '日一二三四五六'.charAt(d.getDay()) +
+' ' + hh + ':' + (mm < 10 ? '0' + mm : mm) + '（' + label + '）';
+var timeHint = '现在是 ' + nowStr + '。写的内容必须符合这个时间（深夜别写「早上好」，凌晨别写「刚吃过午饭」）。\n';
 var prompt = '';
 if (kind === 'post') {
-prompt = '请以' + name + '的身份，发一条朋友圈动态（1~2 句话，生活化、有画面感，可以带一个 emoji）。不要解释、不要加引号，直接给动态正文。';
+prompt = timeHint + '请以' + name + '的身份，发一条朋友圈动态（1~2 句话，生活化、有画面感，可以带一个 emoji）。不要解释、不要加引号，直接给动态正文。';
 } else if (kind === 'comment') {
-prompt = '我在朋友圈发了一条动态：「' + ((extra && extra.text) || '') + '」。请以' + name + '的身份，在评论区留一句（1 句话，自然口语，可以带一个 emoji）。不要解释、不要加引号，直接给评论内容。';
+prompt = timeHint + '我在朋友圈发了一条动态：「' + ((extra && extra.text) || '') + '」。请以' + name + '的身份，在评论区留一句（1 句话，自然口语，可以带一个 emoji）。不要解释、不要加引号，直接给评论内容。';
 } else {
-prompt = '我在朋友圈' + ((extra && extra.role === 'me') ? '评论了你的动态' : '给你留了言') + '：「' + ((extra && extra.text) || '') + '」。请以' + name + '的身份回复一句（1 句话，自然口语）。不要解释、不要加引号，直接给回复内容。';
+prompt = timeHint + '我在朋友圈' + ((extra && extra.role === 'me') ? '评论了你的动态' : '给你留了言') + '：「' + ((extra && extra.text) || '') + '」。请以' + name + '的身份回复一句（1 句话，自然口语）。不要解释、不要加引号，直接给回复内容。';
 }
 return window.__aiGenerate(prompt, '', false).then(function (out) {
 var t = String(out || '').trim();

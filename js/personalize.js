@@ -1588,7 +1588,7 @@ restoreTabbarIcons();
 const restoreAppIconOrder = () => {
 const DEFAULT_ICON_ORDER = {
 main: ['chat', 'home', 'mail', 'feed', 'calendar', 'memory', 'divination', 'note'],
-p2: ['music', 'stats', 'period', 'accounting', 'memo', 'notebook', 'pomo', 'chatcard'],
+p2: ['music', 'stats', 'period', 'accounting', 'memo', 'notebook', 'chatcard'],
 p3: ['memo-arc', 'my-arc', 'eat', 'piggy', 'market', 'giftbox', 'setting']
 };
 const allGrids = Array.prototype.slice.call(document.querySelectorAll('.app-grid'));
@@ -1633,6 +1633,7 @@ try { store.set('app-icon-order-' + gid, JSON.stringify(cleaned)); } catch (e) {
 };
 restoreAppIconOrder();
 try { document.documentElement.classList.add('icons-ready'); } catch (e) {}
+setTimeout(function () { try { document.documentElement.classList.add('icons-ready'); } catch (e) {} }, 3000);
 [600, 1500, 3000, 6000, 10000].forEach(function (t) {
 setTimeout(function () { try { restoreAppIconOrder(); } catch (e) {} }, t);
 });

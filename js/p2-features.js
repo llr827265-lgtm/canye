@@ -2197,7 +2197,7 @@ slide.dataset.desk = String(curCnt);
 const grid = document.createElement('div');
 grid.className = 'app-grid';
 grid.setAttribute('data-app', 'tp-page');
-grid.appendChild(eatApp); grid.appendChild(pomoApp); grid.appendChild(piggyApp);
+grid.appendChild(eatApp); grid.appendChild(piggyApp); // 本地二改：番茄钟入口已移除
 slide.appendChild(grid);
 pagesBox.appendChild(slide);
 try {
@@ -2212,8 +2212,8 @@ placed = true;
 if (!placed) {
 const p2Grid = document.querySelector('.app-grid.p2-grid');
 const p3g = document.querySelector('.app-grid.p3-grid');
-if (p3g) { p3g.appendChild(eatApp); p3g.appendChild(piggyApp); p3g.appendChild(pomoApp); }
-else if (p2Grid) { p2Grid.appendChild(eatApp); p2Grid.appendChild(piggyApp); p2Grid.appendChild(pomoApp); }
+if (p3g) { p3g.appendChild(eatApp); p3g.appendChild(piggyApp); }
+else if (p2Grid) { p2Grid.appendChild(eatApp); p2Grid.appendChild(piggyApp); }
 try { if (window.applyDeskLayout) window.applyDeskLayout(); } catch (e) {}
 }
 const DEF_STATUS = ['在听雨', '在看你写东西', '没睡，在发呆', '刚路过你身边', '在想你', '在发呆', '在看你', '在等你看我'];
