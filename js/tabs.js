@@ -106,7 +106,8 @@ setPage.hidden = false;
 }
 })();
 (function () {
-const PAGES = Array.from(document.querySelectorAll('.page'));
+let PAGES = Array.from(document.querySelectorAll('.page'));
+function refreshPages() { try { PAGES = Array.from(document.querySelectorAll('.page')); } catch (e) {} }
 function visiblePage() { return PAGES.find(p => !p.hidden); }
 const first = visiblePage();
 if (first) history.replaceState({ page: first.id }, '');
@@ -123,9 +124,11 @@ history.pushState({ page: v.id }, '');
 });
 PAGES.forEach(p => mo.observe(p, { attributes: true, attributeFilter: ['hidden'] }));
 window.addEventListener('popstate', () => {
+refreshPages(); // 本地改：动态创建的页面（打卡/记事本）也要能被识别
 const layers = ['img-view-mask', 'modal-mask', 'qa-mask', 'tc-mask', 'poke-card', 'emoji-panel',
 'chat-more-panel', 'chat-search', 'chat-decision-panel', 'chat-divine-panel', 'chat-snake-panel',
 'avlib-card', 'ck-panel', 'feed-notice-panel', 'desk-msg', 'chat-ask-panel', 'msg-actions',
+'punch-mask',
 'pc-sheet-mask',
 'screen-adj-panel',
 'sb-mask'];
