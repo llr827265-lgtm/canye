@@ -7458,6 +7458,9 @@ justify-content:safe center;
 #div-history .ct-hist-cards{display:flex;flex-wrap:wrap;gap:5px;}
 #div-history .ct-hist-chip{font-size:12.5px;line-height:1.55;padding:3px 9px;border-radius:8px;background:#fff;border:1px solid rgba(0,0,0,.07);color:#3a3a3a;}
 #div-history .ct-hist-q{font-size:12px;color:#8a8478;margin-top:7px;}
+#div-history .ct-hist-right{display:inline-flex;align-items:center;gap:8px;}
+#div-history .ct-hist-del{width:20px;height:20px;line-height:18px;text-align:center;border-radius:50%;font-size:14px;color:#bbb;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+#div-history .ct-hist-del:active{background:rgba(0,0,0,.06);color:#888;}
 #div-history .ct-hist-empty{font-size:13px;color:#9a948a;padding:6px 0;}
 #page-fav .msg { max-width:100%; }
 #page-fav .msg .fav-item-card { flex:1 1 auto; min-width:0; }
@@ -10005,6 +10008,16 @@ transition: transform .15s ease, box-shadow .15s ease;
 }
 .punch-card:active { transform: scale(.97); }
 .punch-card.done { border-color: color-mix(in srgb, var(--btn-bg, #111) 35%, transparent); }
+.punch-card-del {
+position: absolute; right: 6px; top: 4px;
+width: 22px; height: 22px; line-height: 20px; text-align: center;
+border-radius: 50%; font-size: 15px; color: #bbb;
+cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.punch-card-del:active { background: rgba(0, 0, 0, .06); color: #888; }
+.punch-confirm-t { font-size: 14.5px; line-height: 1.7; color: var(--ink, #333); text-align: center; padding: 10px 4px 16px; }
+.punch-confirm-btns { display: flex; gap: 10px; }
+.punch-confirm-btns .punch-btn { flex: 1; }
 .punch-card-ico { font-size: 30px; line-height: 1; }
 .punch-card-name { font-size: 15px; font-weight: 700; letter-spacing: .5px; }
 .punch-card-days { font-size: 11.5px; color: var(--muted, #999); }
@@ -10099,6 +10112,7 @@ background: none; font-family: inherit; cursor: pointer;
 .punch-detail-date { font-size: 12px; color: var(--muted, #999); margin-bottom: 10px; }
 .punch-detail-note { font-size: 13.5px; line-height: 1.85; color: var(--ink, #333); white-space: pre-wrap; word-break: break-word; min-height: 44px; }
 .punch-detail-img { display: block; max-width: 100%; border-radius: 12px; margin-top: 12px; }
+.punch-detail-actions { margin-top: 18px; text-align: center; }
 [data-theme="dark"] #page-punch { background: #111; }
 [data-theme="dark"] .punch-quote { background: #1c1c1f; border-color: rgba(255, 255, 255, .08); color: #ddd; }
 [data-theme="dark"] .punch-diary-btn { background: #1f1f22; color: #ddd; border-color: rgba(255, 255, 255, .12); }
@@ -11568,7 +11582,7 @@ font-size: 11.5px; color: var(--muted, #8a8a8a); cursor: pointer; touch-action: 
            （名称+版号 / 部署时间+实时秒 / 版本检测行）收成一行；检测行随 ver-check.js 退役删除。
            data-build-ts / data-version 两属性保留：device.js 诊断、bg-keep 自检、pwa.js 旧包检测
            仍只读属性（诊断版本号走 data-version 兜底，device.js 两处缓存原生支持）。 -->
-      <div class="splash-ver" id="splash-ver" data-build-ts="1795012625488" data-version="v8.56">
+      <div class="splash-ver" id="splash-ver" data-build-ts="1795096247852" data-version="v8.56">
         <span class="sv-app">Mochi 字卡传讯 已完结停更</span>
       </div>
       <!-- v3.5.120：数据（IndexedDB 回填）加载完成前不显示「点击进入」按钮，
@@ -23299,4 +23313,4 @@ window.__mochiBootRetry = function () { try { location.reload(); } catch (e) {} 
 <!-- __MOCHI_EOF__ -->
 </body>
 </html>
-<!-- __MOCHI_EOF__ mwm86634 -->
+<!-- __MOCHI_EOF__ mwnlyhik -->

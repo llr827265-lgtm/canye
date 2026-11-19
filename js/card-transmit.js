@@ -56,11 +56,12 @@ st.id = 'ct-style';
 st.textContent =
 '.ct-mask{position:fixed;inset:0;z-index:9998;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;background:rgba(0,0,0,.26);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}' +
 '.ct-mask[hidden]{display:none;}' +
-'.ct-panel{position:relative;width:100%;max-width:420px;min-height:360px;max-height:86vh;overflow-y:auto;border-radius:22px;background:rgba(255,255,255,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 18px 60px rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.75);padding:18px 16px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;}' +
+'.ct-panel{position:relative;width:100%;max-width:420px;height:440px;max-height:86vh;overflow:hidden;border-radius:22px;background:rgba(255,255,255,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 18px 60px rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.75);padding:18px 16px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;}' +
 '.ct-close{position:absolute;right:12px;top:10px;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.06);color:#555;font-size:17px;cursor:pointer;}' +
 '.ct-tip{font-size:13px;color:#7a736a;margin:6px 0 10px;text-align:center;min-height:18px;}' +
-'.ct-stage{position:relative;width:100%;height:200px;overflow:visible;}' +
-'.ct-result{width:100%;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;min-height:8px;margin-top:8px;}' +
+'.ct-question{max-width:100%;margin:4px 0 2px;text-align:center;font-size:14px;font-weight:600;color:#3a3a3a;line-height:1.5;word-break:break-word;}' +
+'.ct-stage{position:relative;width:100%;flex:1 1 auto;min-height:150px;overflow:visible;}' +
+'.ct-result{width:100%;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;min-height:8px;margin-top:10px;flex:1 1 auto;overflow:auto;}' +
 '.ct-result .ct-card{position:relative;left:auto;top:auto;margin:0;flex:0 0 auto;}' +
 '.ct-card{position:absolute;left:50%;top:50%;width:72px;height:108px;margin-left:-36px;margin-top:-54px;border-radius:10px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.16);cursor:pointer;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.2,.7,.3,1.2),box-shadow .3s;will-change:transform;}' +
 '.ct-card .ct-front,.ct-card .ct-back{position:absolute;inset:0;border-radius:10px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;align-items:center;justify-content:center;overflow:hidden;}' +
@@ -71,7 +72,7 @@ st.textContent =
 '.ct-card.done{box-shadow:0 10px 28px rgba(0,0,0,.2);z-index:3;}' +
 '.ct-shuffle{animation:ctShake .5s ease-in-out infinite alternate;}' +
 '@keyframes ctShake{from{transform:translateY(-3px) rotate(-3deg);}to{transform:translateY(3px) rotate(3deg);}}' +
-'.ct-actions{margin-top:12px;display:flex;gap:10px;min-height:34px;}' +
+'.ct-actions{margin-top:12px;display:flex;gap:10px;min-height:34px;flex:0 0 auto;position:relative;z-index:5;}' +
 '.ct-btn{padding:9px 18px;border-radius:10px;border:1px solid rgba(0,0,0,.12);background:#fff;color:#444;font-size:13px;font-weight:600;cursor:pointer;}' +
 '.ct-btn.primary{background:#111;color:#fff;border-color:#111;}';
 document.head.appendChild(st);
@@ -82,7 +83,7 @@ injectStyle();
 if (!overlay) {
 overlay = document.createElement('div');
 overlay.className = 'ct-mask'; overlay.id = 'ct-mask'; overlay.hidden = true;
-overlay.innerHTML = '<div class="ct-panel"><span class="ct-close" id="ct-close">×</span><div class="ct-tip" id="ct-tip">洗牌中…</div><div class="ct-stage" id="ct-stage"></div><div class="ct-result" id="ct-result"></div><div class="ct-actions" id="ct-actions"></div></div>';
+overlay.innerHTML = '<div class="ct-panel"><span class="ct-close" id="ct-close">×</span><div class="ct-question" id="ct-question" hidden></div><div class="ct-tip" id="ct-tip">洗牌中…</div><div class="ct-stage" id="ct-stage"></div><div class="ct-result" id="ct-result"></div><div class="ct-actions" id="ct-actions"></div></div>';
 document.body.appendChild(overlay);
 overlay.addEventListener('click', function (e) { if (e.target === overlay) closeOverlay(); });
 overlay.querySelector('#ct-close').addEventListener('click', closeOverlay);
@@ -92,7 +93,14 @@ var stage = overlay.querySelector('#ct-stage');
 var tip = overlay.querySelector('#ct-tip');
 var actions = overlay.querySelector('#ct-actions');
 stage.innerHTML = ''; actions.innerHTML = '';
+try { stage.style.display = ''; } catch (e) {}
 tip.textContent = '洗牌中…';
+var qEl = overlay.querySelector('#ct-question');
+var qTxt = String(question || '').trim();
+if (qEl) {
+if (qTxt) { qEl.hidden = false; qEl.textContent = '「' + qTxt + '」'; }
+else { qEl.hidden = true; qEl.textContent = ''; }
+}
 var drawn = pickN(n);
 if (!drawn.length) { tip.textContent = '字卡库还没有可用字卡，先去「字卡库」添加吧'; return; }
 for (var i = 0; i < Math.min(5, n + 2); i++) {
@@ -111,14 +119,16 @@ var W = Math.max(220, rect.width || 360), H = rect.height || 200;
 var cw = drawn.length === 1 ? 96 : drawn.length <= 3 ? 80 : 62;
 var ch = Math.round(cw * 1.5);
 var picked = 0;
-drawn.forEach(function (txt) {
+drawn.forEach(function (txt, idx) {
 var card = document.createElement('div');
 card.className = 'ct-card';
 card.style.width = cw + 'px';
 card.style.height = ch + 'px';
-var rot = Math.random() * 24 - 12;
-var dx = (Math.random() * 0.6 - 0.3) * Math.max(0, W - cw);
-var dy = (Math.random() * 0.5 - 0.25) * Math.max(0, H - ch);
+var rot = Math.random() * 18 - 9;
+var cnt = drawn.length;
+var stepX = cnt > 1 ? Math.min(cw * 0.9, (Math.max(cw, W) - cw) / (cnt - 1) * 0.9) : 0;
+var dx = (idx - (cnt - 1) / 2) * stepX;
+var dy = (Math.random() * 0.3 - 0.15) * Math.max(0, H - ch);
 card.style.transform = 'translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg)';
 card.innerHTML = '<div class="ct-back"></div><div class="ct-front"></div>';
 card.addEventListener('click', function () {
@@ -138,20 +148,21 @@ requestAnimationFrame(function () { card.classList.add('flip'); });
 picked++;
 if (picked >= drawn.length) {
 tip.textContent = '抽完了 · 共 ' + drawn.length + ' 张';
+try { stage.style.display = 'none'; } catch (e) {}
 actions.innerHTML = '<button class="ct-btn" id="ct-sync">同步到聊天</button><button class="ct-btn primary" id="ct-ok">收下字卡</button>';
 actions.querySelector('#ct-sync').addEventListener('click', function () {
-saveRecord(drawn, question, target);
+closeOverlay();
+setTimeout(function () { try { saveRecord(drawn, question, target); } catch (e0) {} }, 30);
 if (window.chatAddIn) {
 drawn.forEach(function (t, i) {
 setTimeout(function () { try { window.chatAddIn(t); } catch (e2) {} }, i * 450);
 });
 }
 try { if (window.toast) window.toast('已让 TA 把字卡发到聊天'); } catch (e3) {}
-closeOverlay();
 });
 actions.querySelector('#ct-ok').addEventListener('click', function () {
-saveRecord(drawn, question, target);
 closeOverlay();
+setTimeout(function () { try { saveRecord(drawn, question, target); } catch (e0) {} }, 30);
 });
 }
 });
@@ -174,7 +185,7 @@ function saveRecord(cards, question, target) {
 var list = loadHist();
 list.unshift({ ts: Date.now(), cards: cards, question: String(question || ''), target: target || '' });
 saveHist(list);
-renderHist();
+setTimeout(function () { try { renderHist(); } catch (e1) {} }, 120);
 try {
 var auto = el('div-auto-send') && el('div-auto-send').checked;
 if (auto && window.chatAddIn) {
@@ -190,14 +201,24 @@ if (!list.length) { box.innerHTML = html + '<div class="ct-hist-empty">还没有
 html += '<div class="ct-hist">';
 list.slice(0, 30).forEach(function (h) {
 var cards = h.cards || [];
-html += '<div class="ct-hist-item">' +
-'<div class="ct-hist-top"><span>' + fmt(h.ts) + '</span><span>' + cards.length + ' 张</span></div>' +
+html += '<div class="ct-hist-item" data-ts="' + escapeHtml(h.ts || '') + '">' +
+'<div class="ct-hist-top"><span>' + fmt(h.ts) + '</span><span class="ct-hist-right"><span>' + cards.length + ' 张</span><span class="ct-hist-del" title="删除这条记录">×</span></span></div>' +
 '<div class="ct-hist-cards">' + cards.map(function (c) { return '<span class="ct-hist-chip">' + escapeHtml(c) + '</span>'; }).join('') + '</div>' +
 (h.question ? '<div class="ct-hist-q">问：' + escapeHtml(h.question) + '</div>' : '') +
 '</div>';
 });
 html += '</div>';
 box.innerHTML = html;
+Array.prototype.forEach.call(box.querySelectorAll('.ct-hist-del'), function (btn) {
+btn.addEventListener('click', function (e) {
+e.stopPropagation();
+var item = btn.closest('.ct-hist-item');
+var ts = item ? item.getAttribute('data-ts') : '';
+var all = loadHist().filter(function (x) { return String(x && x.ts) !== String(ts); });
+saveHist(all);
+renderHist();
+});
+});
 }
 function escapeHtml(s) {
 return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -228,6 +249,7 @@ var target = window.divineGetTarget ? window.divineGetTarget() : '';
 openOverlay(n, q, target);
 });
 }
+window.__ctRenderHist = function () { try { renderHist(); } catch (e) { return 'ERR:' + e.message; } return 'ok'; };
 function boot() {
 bindDraw();
 bindChatDraw();

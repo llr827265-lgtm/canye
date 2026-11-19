@@ -2652,7 +2652,7 @@ if (!av) { av = store.get('feed-ta-avatar'); av = safeBg(av, 'feed-ta-avatar', s
 if (!av) av = s.get('avatar-partner') || '';
 avEl.innerHTML = av ? '<img src="' + attrEsc(av) + '" alt="">' : '';
 }
-if (nameEl) nameEl.textContent = c.name || feedAllCid;
+if (nameEl) nameEl.textContent = taFeedNameFor(feedAllCid);
 try { if (avEl && window.mochiFilePickSurface) window.mochiFilePickSurface(avEl, { id: 'feed-allav-tap', accept: 'image/*', owner: 'mochi-feed-allav-pick' }); } catch (e) {}
 }
 function postCardHtmlAll(p) {
@@ -2687,8 +2687,7 @@ const title = document.getElementById('feed-all-title');
 if (title) {
 if (isMePage) title.textContent = '我的朋友圈';
 else {
-const c = (window.getContacts && window.getContacts().find(x => x.id === feedAllCid)) || { name: feedAllCid };
-title.textContent = (c.name || feedAllCid) + ' 的全部朋友圈';
+title.textContent = taFeedNameFor(feedAllCid) + ' 的全部朋友圈';
 }
 }
 const posts = load().filter(inPage).sort((a, b) => b.ts - a.ts);

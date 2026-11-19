@@ -125,6 +125,7 @@ if (empty) empty.style.display = 'none';
 grid.innerHTML = g.map(function (it) {
 var n = daysOf(it.id), ok = doneToday(it.id);
 return '<button class="punch-card' + (ok ? ' done' : '') + '" data-gid="' + esc(it.id) + '">' +
+'<span class="punch-card-del" data-del="' + esc(it.id) + '" title="删除">×</span>' +
 '<span class="punch-card-ico">' + esc(it.icon || '⭐') + '</span>' +
 '<span class="punch-card-name">' + esc(it.name) + '</span>' +
 '<span class="punch-card-days">' + (ok ? '今天已打卡' : '已坚持 ' + n + ' 天') + '</span>' +
@@ -132,16 +133,61 @@ return '<button class="punch-card' + (ok ? ' done' : '') + '" data-gid="' + esc(
 }).join('');
 Array.prototype.forEach.call(grid.querySelectorAll('.punch-card'), function (b) {
 b.addEventListener('click', function () { onCardClick(b.getAttribute('data-gid')); });
+var delBtn = b.querySelector('.punch-card-del');
+if (delBtn) delBtn.addEventListener('click', function (e) {
+e.stopPropagation();
+var gid = b.getAttribute('data-gid');
+confirmBox('删除这个打卡目标？相关记录也会一起删除。', function () {
+saveGoals(goals().filter(function (x) { return x.id !== gid; }));
+saveLogs(logs().filter(function (l) { return l && l.goalId !== gid; }));
+renderGrid();
+toast('已删除目标');
+});
+});
 });
 }
 function onCardClick(gid) {
 var g = goals().filter(function (x) { return x.id === gid; })[0];
 if (!g) return;
-if (doneToday(gid)) { toast('今天已经打卡过啦'); return; }
+if (doneToday(gid)) {
+confirmBox('今天已经打卡过了，要取消这次打卡吗？', function () {
+var t = todayKey();
+saveLogs(logs().filter(function (l) { return !(l && l.goalId === gid && l.date === t); }));
+renderGrid();
+toast('已取消今天的打卡');
+});
+return;
+}
 var lg = { id: 'pl_' + Date.now(), goalId: gid, date: todayKey(), note: '', img: '', ts: Date.now() };
 var all = logs(); all.unshift(lg); saveLogs(all);
 renderGrid();
 openDone(g, lg);
+}
+function bindLongPress(el2, fn) {
+var timer = null;
+function start() {
+timer = setTimeout(function () { timer = null; fn(); }, 650);
+}
+function cancel() { if (timer) { clearTimeout(timer); timer = null; } }
+el2.addEventListener('pointerdown', start);
+el2.addEventListener('pointerup', cancel);
+el2.addEventListener('pointerleave', cancel);
+el2.addEventListener('pointercancel', cancel);
+el2.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+}
+function confirmBox(title, onOk) {
+var mask = document.createElement('div');
+mask.className = 'punch-mask'; mask.id = 'punch-mask';
+mask.innerHTML =
+'<div class="punch-panel punch-paper punch-confirm">' +
+'<div class="punch-confirm-t">' + esc(title) + '</div>' +
+'<div class="punch-confirm-btns"><button class="punch-btn" id="pc-cancel">取消</button><button class="punch-btn primary" id="pc-ok">确定</button></div>' +
+'</div>';
+document.body.appendChild(mask);
+function close() { if (mask.parentNode) mask.parentNode.removeChild(mask); }
+mask.querySelector('#pc-cancel').addEventListener('click', close);
+mask.addEventListener('click', function (e) { if (e.target === mask) close(); });
+mask.querySelector('#pc-ok').addEventListener('click', function () { close(); try { onOk(); } catch (e) {} });
 }
 function maybeAiEncourage(g, days) {
 try {
@@ -337,7 +383,18 @@ if (title) title.textContent = g.name || '打卡日记';
 if (more) more.hidden = false;
 body.innerHTML = '<div class="punch-detail-date">' + esc(l.date || '') + ' · 第 ' + daysOf(l.goalId) + ' 次打卡</div>' +
 '<div class="punch-detail-note">' + (l.note ? esc(l.note) : '本次打卡未写日志') + '</div>' +
-(l.img ? '<img class="punch-detail-img" src="' + esc(l.img) + '" alt="">' : '');
+(l.img ? '<img class="punch-detail-img" src="' + esc(l.img) + '" alt="">' : '') +
+'<div class="punch-detail-actions"><button class="punch-btn" id="punch-diary-del">删除这条记录</button></div>';
+var delBtn = body.querySelector('#punch-diary-del');
+if (delBtn) delBtn.addEventListener('click', function () {
+confirmBox('删除这条打卡记录？', function () {
+saveLogs(logs().filter(function (x) { return x.id !== l.id; }));
+diaryView = 'list'; diaryLid = null;
+renderDiary();
+renderGrid();
+toast('已删除');
+});
+});
 }
 }
 function openNoteEditor(l) {
